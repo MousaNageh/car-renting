@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    env_file:
+      - .env
+    # volumes:
+    #   - ./db_backup:/var/lib/mysql
+    restart: always
+  myapp:
+    tty: true
+    stdin_open: true
+    build: .
+    volumes:
+      - .:/myapp 
+    restart: always
+    command: python app.py 
+    expose:
+      - 9000
+    ports:
+      - 9000:9000
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+
